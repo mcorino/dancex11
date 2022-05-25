@@ -142,8 +142,7 @@ namespace DAnCEX11
       for (uint32_t i = 0; i < sub_plan_list.size (); ++i)
       {
         // get the sub plan and key for current instance
-        TSubPlanKey& sub_plan_key = sub_plan_list[i].first;
-        std::list < uint32_t > &instances = sub_plan_list[i].second;
+        auto& [sub_plan_key, instances] = sub_plan_list[i];
 
         for (uint32_t i = 0; i < plan.instance ().size (); ++i)
           {
@@ -162,13 +161,11 @@ namespace DAnCEX11
       //     one by one.
       for (uint32_t i = 0; i < (sub_plan_list.size ()); ++i)
         {
+          // get the sub plan key and instance list for current instance
+          auto& [sub_plan_key, instances] = sub_plan_list[i];
+
           // get the sub plan and key for current instance
-          TSubPlanKey& sub_plan_key = sub_plan_list[i].first;
-
           ::Deployment::DeploymentPlan sub_plan = this->sub_plans_[sub_plan_key];
-
-          // Get instance list
-          std::list <uint32_t> &instances = sub_plan_list[i].second;
 
           for (InstanceList::const_iterator i = instances.begin ();
                i != instances.end ();
@@ -355,8 +352,7 @@ namespace DAnCEX11
          ++iter_plans)
       {
         // get the sub plan and key for current instance
-        ::Deployment::DeploymentPlan& sub_plan = iter_plans->second;
-        const TSubPlanKey& sub_plan_key = iter_plans->first;
+        auto& [sub_plan_key, sub_plan] = *iter_plans;
 
         // finalize sub plan
         plan_splitter.finalize_sub_plan (sub_plan, const_cast<TSubPlanKey&> (sub_plan_key));
